@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Xunit;
 
@@ -937,7 +938,6 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             var projectEngine = CreateProjectEngine(builder =>
             {
                 builder.ConfigureDocumentClassifier();
-                builder.AddTagHelpers(descriptors);
 
                 // Some of these tests use templates
                 builder.AddTargetExtension(new TemplateTargetExtension());
@@ -950,7 +950,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             var projectItem = CreateProjectItem();
 
             // Act
-            var codeDocument = projectEngine.Process(projectItem);
+            var codeDocument = projectEngine.Process(projectItem, descriptors.ToList());
 
             // Assert
             AssertDocumentNodeMatchesBaseline(codeDocument.GetDocumentIntermediateNode());
@@ -963,7 +963,6 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             var projectEngine = CreateProjectEngine(builder =>
             {
                 builder.ConfigureDocumentClassifier();
-                builder.AddTagHelpers(descriptors);
 
                 // Some of these tests use templates
                 builder.AddTargetExtension(new TemplateTargetExtension());
@@ -976,7 +975,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             var projectItem = CreateProjectItem();
 
             // Act
-            var codeDocument = projectEngine.ProcessDesignTime(projectItem);
+            var codeDocument = projectEngine.ProcessDesignTime(projectItem, descriptors.ToList());
 
             // Assert
             AssertDocumentNodeMatchesBaseline(codeDocument.GetDocumentIntermediateNode());

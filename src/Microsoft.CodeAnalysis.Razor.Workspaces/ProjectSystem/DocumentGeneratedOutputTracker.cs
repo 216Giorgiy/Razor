@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             var projectEngine = project.GetProjectEngine();
             var projectItem = projectEngine.FileSystem.GetItem(document.FilePath);
-            return projectItem == null ? null : projectEngine.ProcessDesignTime(projectItem);
+            return projectItem == null ? null : projectEngine.ProcessDesignTime(projectItem, tagHelpers);
         }
     }
 }

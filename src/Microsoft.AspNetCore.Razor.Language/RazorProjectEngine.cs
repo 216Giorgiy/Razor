@@ -35,6 +35,18 @@ namespace Microsoft.AspNetCore.Razor.Language
             return codeDocument;
         }
 
+        internal virtual RazorCodeDocument Process(RazorProjectItem projectItem, IReadOnlyList<TagHelperDescriptor> tagHelpers)
+        {
+            if (projectItem == null)
+            {
+                throw new ArgumentNullException(nameof(projectItem));
+            }
+
+            var codeDocument = CreateCodeDocumentCore(projectItem, tagHelpers);
+            ProcessCore(codeDocument);
+            return codeDocument;
+        }
+
         public virtual RazorCodeDocument ProcessDesignTime(RazorProjectItem projectItem)
         {
             if (projectItem == null)
@@ -47,9 +59,25 @@ namespace Microsoft.AspNetCore.Razor.Language
             return codeDocument;
         }
 
+        internal virtual RazorCodeDocument ProcessDesignTime(RazorProjectItem projectItem, IReadOnlyList<TagHelperDescriptor> tagHelpers)
+        {
+            if (projectItem == null)
+            {
+                throw new ArgumentNullException(nameof(projectItem));
+            }
+
+            var codeDocument = CreateCodeDocumentDesignTimeCore(projectItem, tagHelpers);
+            ProcessCore(codeDocument);
+            return codeDocument;
+        }
+
         protected abstract RazorCodeDocument CreateCodeDocumentCore(RazorProjectItem projectItem);
 
+        internal abstract RazorCodeDocument CreateCodeDocumentCore(RazorProjectItem projectItem, IReadOnlyList<TagHelperDescriptor> tagHelpers);
+
         protected abstract RazorCodeDocument CreateCodeDocumentDesignTimeCore(RazorProjectItem projectItem);
+
+        internal abstract RazorCodeDocument CreateCodeDocumentDesignTimeCore(RazorProjectItem projectItem, IReadOnlyList<TagHelperDescriptor> tagHelpers);
 
         protected abstract void ProcessCore(RazorCodeDocument codeDocument);
 
